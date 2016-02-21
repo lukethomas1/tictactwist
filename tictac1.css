@@ -1,0 +1,22 @@
+div {
+
+}
+
+.box {
+    height: 100vh;
+    width: 100vw;
+    font-size: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: left;
+}
+
+.row-container {
+    position: relative;
+    text-align: center;
+    display: inline-block;
+    height: 100vh;
+    width: 300vw;
+    overflow: hidden;
+}
