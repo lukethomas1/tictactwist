@@ -1,0 +1,59 @@
+div {
+
+}
+
+.box {
+    height: 100vh;
+    width: 100vw;
+    font-size: 50em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: left;
+}
+
+#minimap {
+    position: fixed;
+}
+
+.row-container {
+    position: relative;
+    text-align: center;
+    display: inline-block;
+    height: 100vh;
+    width: 300vw;
+    overflow: hidden;
+}
+
+td {
+    text-align: center;
+    width: 30px;
+    height: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid black;
+}
+
+#midrow {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+.middata {
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+}
+
+.xbox {
+    background-color: rgba(150, 0, 0, 0.2);
+}
+
+.obox {
+    background-color: rgba(0, 0, 150, 0.2);
+}
+
+.current-mini-box {
+    background-color: rgba(0, 255, 0, 0.2);
+}
