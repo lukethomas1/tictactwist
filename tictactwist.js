@@ -30,6 +30,19 @@ $(document).ready(function() {
     var row = 0;
     var column = 0;
 
+    // Hold the css classes for X and O, to be used in contains and toggle
+    var xClass = "xbox";
+    var oClass = "obox";
+
+    // Variables to track of game state
+    var boxCount = 0;
+    var gameOver = false;
+
+    // The text to display win or cats game
+    var victoryText = document.querySelector("#victory");
+    // Start victory text as hidden
+    $(victoryText).hide();
+
     // Get the amount of rows and columns
     var NUM_ROWS = document.querySelectorAll(".row-container").length;
     // Get the amount of boxes and divide by the amount of rows
@@ -78,6 +91,95 @@ $(document).ready(function() {
     updateMiniMap();
 
 
+    // Beginning of dynamic code
+
+
+    // I feel like this isn't the most efficient method, plan on finding a
+    // better way in the future
+    function checkWin(player) {
+        var horizontalWin = true;
+        var verticalWin = true;
+        var d1Win = true;
+        var d2Win = true;
+
+        // Check horizontally
+        for(var cIndex = 0; cIndex < NUM_COLS; cIndex++) {
+            // Check each column at the same row value
+            if(!boxes[row][cIndex].classList.contains(player)) {
+                horizontalWin = false;
+            }
+        }
+
+        // Check vertically
+        for(var rIndex = 0; rIndex < NUM_ROWS; rIndex++) {
+            // Check each row at the same column value
+            if(!boxes[rIndex][column].classList.contains(player)) {
+                verticalWin = false;
+            }
+        }
+
+        // Check if the latest piece was placed in a position that could win
+        // diagonally
+        if((row === column) || (Math.abs(row - column) === NUM_ROWS - 1)) {
+            for(var d = 0; d < NUM_ROWS; d++) {
+                // Check diagonally from top left to bottom right
+                if(!boxes[d][d].classList.contains(player)) {
+                    d1Win = false;
+                }
+
+                // Check diagonally from bottom left to top right
+                if(!boxes[NUM_ROWS - d - 1][d].classList.contains(player)) {
+                    d2Win = false;
+                }
+            }
+        }
+
+        // Couldn't have won diagonally
+        else {
+            d1Win = false;
+            d2Win = false;
+        }
+
+        //console.log("H: " + horizontalWin + ", V: " + verticalWin + ", D: " + d1Win + ", " + d2Win);
+
+        // Player wins
+        if(horizontalWin || verticalWin || d1Win || d2Win) {
+            $(victoryText).show('slow');
+            gameOver = true;
+            return true;
+        }
+
+        // If all spaces are taken and nobody has won
+        if(boxCount === NUM_ROWS * NUM_COLS) {
+            victoryText.textContent = "Cat's Game";
+            $(victoryText).show('slow');
+            gameOver = true;
+        }
+
+        // Didn't win... yet
+        return false;
+
+    }
+
+    // Resets the game; the boxes, the victory text, and game over condition
+    function resetGame() {
+        // Clear the main boxes and the minimap boxes
+        for(var rIndex = 0; rIndex < NUM_ROWS; rIndex++) {
+            for(var cIndex = 0; cIndex < NUM_COLS; cIndex++) {
+                boxes[rIndex][cIndex].classList.remove(xClass, oClass);
+                boxes[rIndex][cIndex].textContent = "";
+                miniboxes[rIndex][cIndex].classList.remove(xClass, oClass);
+                miniboxes[rIndex][cIndex].textContent = "";
+            }
+        }
+
+        // Hide end game text
+        $(victoryText).hide();
+
+        // Start the game again
+        gameOver = false;
+    }
+
     // Moves window horizontally to new position
     function moveHorizontal() {
         $('body').animate({
@@ -112,24 +214,51 @@ $(document).ready(function() {
 
         // Space bar
         if (evt.keyCode === 32) {
-            if(!currentBox.classList.contains("xbox") && !currentBox.classList.contains("obox")) {
+            // Box is empty, no x or o
+            if(!currentBox.classList.contains(xClass) && 
+               !currentBox.classList.contains(oClass) && !gameOver) {
                 // Place an X            
                 if(isNextX) {
-                    currentBox.classList.toggle("xbox");
+                    // Set the main box to an X
+                    currentBox.classList.toggle(xClass);
                     currentBox.textContent = "X";
-                    currentMiniBox.classList.toggle("xbox");
+                    // Set the minimap box to an X
+                    currentMiniBox.classList.toggle(xClass);
                     currentMiniBox.textContent = "X";
+
+                    // Check if X player won the game
+                    if(checkWin(xClass)) {
+                        victoryText.textContent = "X Player Wins!";
+                    }
                 }
 
                 // Place an O
                 else {
-                    currentBox.classList.toggle("obox");
+                    // Set the main box to an O
+                    currentBox.classList.toggle(oClass);
                     currentBox.textContent = "O";
-                    currentMiniBox.classList.toggle("obox");
+                    // Set the minimap box to an O
+                    currentMiniBox.classList.toggle(oClass);
                     currentMiniBox.textContent = "O";
+
+                    // Check if O player won the game
+                    if(checkWin(oClass)) {
+                        victoryText.textContent = "O Player Wins!";
+                        $(victoryText).show('slow');
+                        gameOver = true;
+                    }
                 }
 
+                // Increment number of spaces taken
+                boxCount++;
+
+
+
                 isNextX = !isNextX;
+            }
+
+            else if(gameOver) {
+                resetGame();
             }
         }
 

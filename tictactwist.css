@@ -1,5 +1,5 @@
-div {
-
+body {
+    overflow: hidden;
 }
 
 .box {
@@ -29,6 +29,7 @@ td {
     text-align: center;
     width: 30px;
     height: 20px;
+    background-color: white;
 }
 
 table {
@@ -47,7 +48,7 @@ table {
 }
 
 .xbox {
-    background-color: rgba(150, 0, 0, 0.2);
+    background-color: rgba(255, 0, 41, 0.2);
 }
 
 .obox {
@@ -55,5 +56,11 @@ table {
 }
 
 .current-mini-box {
-    background-color: rgba(0, 255, 0, 0.2);
+    background-color: rgb(0, 255, 0);
+}
+
+#victory {
+    position: fixed;
+    text-align: center;
+    width: 100vw;
 }
