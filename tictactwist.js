@@ -27,12 +27,15 @@ $(document).ready(function() {
     // X and Y coordinates of the currentBox box
     // Increasing row will move right, decreasing row will move left
     // Increasing column will move down, decreasing column will move up
-    var row = 0;
-    var column = 0;
+    var row = 1;
+    var column = 1;
 
     // Hold the css classes for X and O, to be used in contains and toggle
     var xClass = "xbox";
     var oClass = "obox";
+
+    var xScore = document.querySelector("#xscore");
+    var oScore = document.querySelector("#oscore");
 
     // Variables to track of game state
     var boxCount = 0;
@@ -97,6 +100,7 @@ $(document).ready(function() {
     // I feel like this isn't the most efficient method, plan on finding a
     // better way in the future
     function checkWin(player) {
+        // Variables to keep track of win, start at true and are proved false
         var horizontalWin = true;
         var verticalWin = true;
         var d1Win = true;
@@ -144,6 +148,17 @@ $(document).ready(function() {
 
         // Player wins
         if(horizontalWin || verticalWin || d1Win || d2Win) {
+            if(player === xClass) {
+                victoryText.textContent = "X Player Wins!";
+                // Increase score of X player
+                xScore.textContent = Number(xScore.textContent) + 1
+            }
+            else {
+                victoryText.textContent = "O Player Wins!";
+                // Increase score of O player
+                oScore.textContent = Number(oScore.textContent) + 1
+            }
+
             $(victoryText).show('slow');
             gameOver = true;
             return true;
@@ -166,8 +181,10 @@ $(document).ready(function() {
         // Clear the main boxes and the minimap boxes
         for(var rIndex = 0; rIndex < NUM_ROWS; rIndex++) {
             for(var cIndex = 0; cIndex < NUM_COLS; cIndex++) {
+                // Clear main boxes
                 boxes[rIndex][cIndex].classList.remove(xClass, oClass);
                 boxes[rIndex][cIndex].textContent = "";
+                // Clear minimap boxes
                 miniboxes[rIndex][cIndex].classList.remove(xClass, oClass);
                 miniboxes[rIndex][cIndex].textContent = "";
             }
@@ -175,6 +192,9 @@ $(document).ready(function() {
 
         // Hide end game text
         $(victoryText).hide();
+
+        // Reset number of filled boxes
+        boxCount = 0;
 
         // Start the game again
         gameOver = false;
@@ -217,6 +237,9 @@ $(document).ready(function() {
             // Box is empty, no x or o
             if(!currentBox.classList.contains(xClass) && 
                !currentBox.classList.contains(oClass) && !gameOver) {
+                // Increment number of spaces filled
+                boxCount++;
+
                 // Place an X            
                 if(isNextX) {
                     // Set the main box to an X
@@ -227,9 +250,7 @@ $(document).ready(function() {
                     currentMiniBox.textContent = "X";
 
                     // Check if X player won the game
-                    if(checkWin(xClass)) {
-                        victoryText.textContent = "X Player Wins!";
-                    }
+                    checkWin(xClass);
                 }
 
                 // Place an O
@@ -242,21 +263,14 @@ $(document).ready(function() {
                     currentMiniBox.textContent = "O";
 
                     // Check if O player won the game
-                    if(checkWin(oClass)) {
-                        victoryText.textContent = "O Player Wins!";
-                        $(victoryText).show('slow');
-                        gameOver = true;
-                    }
+                    checkWin(oClass);
                 }
 
-                // Increment number of spaces taken
-                boxCount++;
-
-
-
+                // Change next piece placed
                 isNextX = !isNextX;
             }
 
+            // If player presses space after game is over, restart game
             else if(gameOver) {
                 resetGame();
             }

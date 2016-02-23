@@ -2,11 +2,17 @@
 <html>
 <head>
     <title>Tic Tac Twist</title>
+    <!-- Css stylesheet -->
     <link rel="stylesheet" type="text/css" href="tictactwist.css">
+    <!-- Google Fonts: Montserrat -->
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+    <!-- Jquery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-git2.min.js"></script>
+    <!-- JavaScript -->
     <script type="text/javascript" src="tictactwist.js"></script>
 </head>
 <body>
+    <!-- Minimap -->
     <table id="minimap">
         <tr id="toprow">
             <td class="data0"></td>
@@ -24,21 +30,32 @@
             <td class="data2"></td>
         </tr>
     </table>
+
+    <!-- Victory text -->
     <h1 id="victory"></h1>
-    <div class="row-container" id="row0">
-        <div class="box col0"></div>
-        <div class="box col1"></div>
-        <div class="box col2"></div>
-    </div>
-    <div class="row-container" id="row1">
-        <div class="box col0"></div>
-        <div class="box col1"></div>
-        <div class="box col2"></div>
-    </div>
-    <div class="row-container" id="row2">
-        <div class="box col0"></div>
-        <div class="box col1"></div>
-        <div class="box col2"></div>
+
+    <!-- Scoreboard -->
+    <h1 id="scoreboard">
+        <span id="xscore">0</span> - <span id="oscore">0</span>
+    </h1>
+
+    <!-- Main boxes -->
+    <div id="mainboxes">
+        <div class="row-container" id="row0">
+            <div class="box col0"></div>
+            <div class="box col1"></div>
+            <div class="box col2"></div>
+        </div>
+        <div class="row-container" id="row1">
+            <div class="box col0"></div>
+            <div class="box col1"></div>
+            <div class="box col2"></div>
+        </div>
+        <div class="row-container" id="row2">
+            <div class="box col0"></div>
+            <div class="box col1"></div>
+            <div class="box col2"></div>
+        </div>
     </div>
 </body>
 </html>
